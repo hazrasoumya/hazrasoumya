@@ -1,0 +1,35 @@
+input GetBrandProductRequest {
+  targetTeam: String
+  brandId: String
+  teamProductId: String
+  productId: String
+  isPriority: Boolean
+  searchItem: String
+  isActive: Boolean!
+  isKpi: Boolean
+}
+
+type GetKpiBrandProductResponse{
+  error: Boolean!
+  message: String!
+  errorCode: Int!
+  brands: [KpiBrandItem!]!
+}
+
+type KpiBrandItem{
+  brandId: String!
+  brandName: String!
+  products: [KpiProductItem!]!
+}
+
+type KpiProductItem{
+  teamProductId: String!
+  productId: String!
+  principalName: String!
+  materialDescription: String!
+  isPriority: Boolean!
+}
+
+extend type Query {
+  getKpiBrandProduct(input: GetBrandProductRequest!): GetKpiBrandProductResponse!
+}

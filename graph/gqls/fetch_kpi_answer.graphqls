@@ -1,0 +1,37 @@
+type KpiAnswer{
+  id: String!
+  answer: [KPIAnswerRes!]!
+  kpiId:String!
+  kpiVersionId: String!
+  category: Int!
+  teamMemberCustomerId: String!
+  scheduleEvent: String!
+  targetItem: String!
+}
+
+input GetKpiAnswerRequest {
+    kpiId: String!
+    kpiVersionId: String!
+    category: Int!
+    teamMemberCustomerId: String!
+    scheduleEvent: String!
+    targetItem: String!
+  }
+
+type GetKpiAnswerResponse{
+    error: Boolean!
+    message: String!
+    errorCode: Int!
+    isOldAnswer: Boolean!
+    isProposedStock: Boolean!
+    getAnswers: [KpiAnswer!]!
+}
+
+type KPIAnswerRes {
+  questioNnumber: Int!
+  value: [String!]!
+}   
+
+extend type Query {
+  getKpiAnswers(input: GetKpiAnswerRequest): GetKpiAnswerResponse!
+}

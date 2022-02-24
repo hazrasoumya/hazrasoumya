@@ -1,0 +1,101 @@
+type flashBulletin{
+  id:String!
+  type:String!
+  title:String!
+  description:String!
+  validityDate:String!
+  attachments:[Attachment!]!
+  recipients:[Recipients!]!
+}
+
+type Attachment{
+  id: String!
+  url: String!
+  filename: String!
+}
+
+type Recipients{
+  id:String!
+  description:String!
+}
+
+input listFlashBulletinInput {
+  type: Int
+  isActive: Boolean
+  startDate: String
+  endDate: String
+  receipientId: String
+  teamMemberCustomerId: String
+}
+
+type flashBulletinResponse {
+  error: Boolean!
+  message: String!
+  validationErrors: [validationMessage]
+}
+
+type flashBulletinData{
+  id: String!
+  title:String!
+  description:String!
+  status:Boolean!
+  startDate:String!
+  endDate:String!
+  type: String!
+  createdDate: String!
+  modifiedDate: String!
+  attachments: [String!]!
+}
+
+type listFlashBulletinResponse {
+  error: Boolean!
+  message: String!
+  flashBulletins: [flashBulletinData!]!
+}
+
+
+input retriveInfoFlashBulletinInput{
+  bulletinID: String!
+}
+
+type retriveInfoFlashBulletinleResponse {
+  error: Boolean!
+  message: String!
+  flashBulletinData: flashBulletin
+}
+
+input AttachmentUpsertInput {
+  id: String
+  filename: String!
+  url: String!
+}
+
+input flashBulletinUpsertInput {
+  activeDirName:String!
+  id: String
+  type: Int!
+  title: String!
+  description: String!
+	validity_date_start: String!
+	validity_date_end: String!
+  attachments: [AttachmentUpsertInput!]!
+  recipients: [String!]!
+  isDeleted: Boolean
+  isActive: Boolean
+  customerGroup: [String]
+}
+
+type flashBulletinUpsertResponse {
+  error: Boolean!
+  message: String!
+  validationErrors: [validationMessage]
+}
+
+extend type Mutation {
+	upsertFlashBulletin(input: flashBulletinUpsertInput!): flashBulletinUpsertResponse!
+}
+
+extend type Query {
+	retriveFlashBulletinSingle(input: retriveInfoFlashBulletinInput!): retriveInfoFlashBulletinleResponse!
+  listFlashbulletin(input: listFlashBulletinInput!): listFlashBulletinResponse!
+}

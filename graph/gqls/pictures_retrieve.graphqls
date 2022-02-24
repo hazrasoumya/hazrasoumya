@@ -1,0 +1,92 @@
+input PicturesInput{
+  teamID: String!
+  type: String!
+  productID: [String]
+  brandID: [String]
+  customerID: [String]
+  startDate: String!
+  endDate: String!
+}
+
+input PictureZipInput{
+  selections:[String!]!
+  type: String!
+}
+
+input ListInput{
+ teamID: String
+}
+
+type RetrievePicturesResponse {
+  error: Boolean!
+  message: String!
+  data: [Teams!]!
+}
+
+type RetrievePictureZip {
+  error: Boolean!
+  message: String!
+  url: String!
+}
+
+type Teams {
+  teamID:String!
+  teamName:String!
+  customers:[Customer!]
+}
+
+type Customer {
+  customerID:String!
+  promotion: Images!
+  customerName:String!
+  product: Images!
+  survey: Images!
+  brand: Images!
+  competitor: Images!
+}
+
+type Images {
+  name:String!
+  url:[String!]!
+}
+
+type CustomerList {
+  id:String!
+  name:String!
+}
+
+type CustomerListResponse {
+  error: Boolean!
+  message: String!
+  data: [CustomerList!]!
+}
+
+type ProductList {
+  id:String!
+  name:String!
+}
+
+type ProductListResponse {
+  error: Boolean!
+  message: String!
+  data: [ProductList!]!
+}
+
+type BrandList {
+  id:String!
+  name:String!
+}
+
+type BrandListResponse {
+  error: Boolean!
+  message: String!
+  data: [BrandList!]!
+}
+
+extend type Query {
+  retrievePictures(input: PicturesInput!): RetrievePicturesResponse!
+  retrievePictureZip(input: PictureZipInput!): RetrievePictureZip!
+  retrievePictureCustomerList(input:ListInput):CustomerListResponse!
+  retrievePictureProductList(input:ListInput):ProductListResponse!
+  retrievePictureBrandList(input:ListInput):BrandListResponse!
+}

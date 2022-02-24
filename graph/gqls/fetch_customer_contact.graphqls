@@ -1,0 +1,25 @@
+type CustomerContact{
+  id: String!
+  contactName: String!
+  designation: String!
+  contactNumber: String!
+  contactImage: String!
+  customerId: String!
+  customerName: String!  
+  hasConsent:Boolean!
+  emailId: String!
+}
+
+input GetCustomerContactRequest {
+    id: String
+    customerId: String
+    teamMememberCustomerID: String
+}
+
+type GetCustomerContactResponse{
+  getCustomerContact: [CustomerContact!]!
+}
+
+extend type Query {
+  getGetCustomerContacts(input: GetCustomerContactRequest): GetCustomerContactResponse!
+}

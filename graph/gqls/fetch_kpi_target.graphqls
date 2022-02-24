@@ -1,0 +1,52 @@
+type KpiTarget{
+    id: String!
+    year:Int!
+    region:String!
+    country:String!
+    currency:String!
+    plants:Int!
+    bergu:String!
+    status:String!
+    teamName:String!
+    salesRep:String!
+    target:[KpiTargetRes!]!
+}
+
+type KpiTargetRes {
+    kpiTitle:String!
+    kpiValue:String!
+    values:[TargetValueRes!]!
+}   
+
+type TargetValueRes{
+    month:Int!
+    value:Float!
+}
+
+input GetKpiTargetRequest {
+    id: String
+    year: Int
+    status: String
+    salesRepId: String
+    teamId: String
+  }
+
+type GetKpiTargetResponse{
+  error: Boolean!
+  message: String!
+  getTargets: [KpiTarget!]!
+}
+type KpiTargetTitle{
+  title:String!
+  value:String!
+  description:String!
+}
+type KpiTaregetTitleResponse{
+  error: Boolean!
+  message: String!
+  kpiTargetTitles:[KpiTargetTitle!]!
+}
+extend type Query {
+  getKpiTargets(input: GetKpiTargetRequest): GetKpiTargetResponse!
+  getKpiTargetTitle:KpiTaregetTitleResponse
+}

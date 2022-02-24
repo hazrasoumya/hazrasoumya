@@ -1,0 +1,20 @@
+input CustomerContactRequest {
+  id: String
+  contactName: String!
+  designation: String!
+  contactNumber: String!
+  contactImage: String
+  authorActiveDirName: String!
+  customerId: String!
+  emailId: String
+}
+
+input CustomerContactDeleteRequest {
+  id: String!
+  authorActiveDirName: String!
+}
+
+extend type Mutation {
+  upsertCustomerContact(input: CustomerContactRequest!): kpiResponse!
+  deleteCustomerContact(input: CustomerContactDeleteRequest!): kpiResponse!
+}

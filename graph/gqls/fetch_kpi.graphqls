@@ -1,0 +1,120 @@
+input getKpiInput {
+  parentKpiId:String
+  kpiId:String
+  kpiVersionId:String
+  teamId:String
+  brandId:String
+  teamProductId:String
+  month:Int
+  year:Int
+  searchItem:String
+  limit:Int
+  pageNo:Int
+}
+
+type GetKpi {
+  parentKpiId: String!
+  productKpiId: String!
+  brandKpiId: String!
+  productKpiVersionId: String!
+  brandKpiVersionId: String!
+  kpiName: String!
+  targetTeamId:String!
+  targetTeamName:String!
+  effectiveMonth: Int!
+  effectiveYear: Int!
+  isPriority: Boolean!
+  targetProduct:[String!]!
+  targetBrand:[String!]!
+  productDesign:[KPIDesignRes!]!
+  brandDesign:[KPIDesignRes!]!
+}
+
+type KPIDesignRes {
+  name: String!
+  active: Boolean!
+  categoryId: Int!
+  category:String!
+  type: String!
+  effectiveStartDate:String!
+  effectiveEndDate:String!
+  questions: [KPIQuestionRes!]!
+}
+
+type KPIQuestionRes {
+  questionNumber:Int!
+  title: String!
+  type: String!
+  optionValues: [String!]!
+  active: Boolean!
+  required: Boolean!
+}
+
+type GetKpiResponse {
+  error: Boolean!
+  message: String
+  errorCode: Int!
+  totalPage: Int!
+  data: [GetKpi!]!
+}
+
+input KpiOfflineInput {
+  startDate: Int
+  endDate: Int
+}
+
+type KpiOfflineResponse {
+  error: Boolean!
+  errorCode: Int!
+  message: String!
+  getKpiOffline: [GetKpiOffline!]!
+  kpiProductBrandAnswer: [KpiProductBrandAnswer!]!
+}
+
+type GetKpiOffline {
+  parentKpiId: String!
+  productKpiId: String!
+  brandKpiId: String!
+  productKpiVersionId: String!
+  brandKpiVersionId: String!
+  kpiName: String!
+  targetTeamId:String!
+  targetTeamName:String!
+  effectiveMonth: Int!
+  effectiveYear: Int!
+  isPriority: Boolean!
+  targetProduct: [String!]
+  targetBrand: [String!]
+  productDesign:[KPIDesignRes!]!
+  brandDesign:[KPIDesignRes!]!
+}
+
+type KpiProductBrandAnswer {
+  eventID: String!
+  teamCustomerID: String!
+  brands: [KpiBrandItemOffline!]!
+}
+
+type KpiBrandItemOffline {
+  brandId: String!
+  brandName: String!
+  brandKpiVersionId: String
+  brandKpiAnswer: [KpiAnswer!]!
+  products: [KpiProductItemOffline!]!
+}
+
+type KpiProductItemOffline {
+  teamId: String!
+  teamProductId: String!
+  productId: String!
+  principalName: String!
+  materialDescription: String!
+  isPriority: Boolean!
+  productKpiVersionId: String
+  productKpiAnswer: [KpiAnswer!]!
+}
+
+extend type Query {
+  getKpis(input:getKpiInput): GetKpiResponse!
+  getKpiQuestionAnswerOffline(input:KpiOfflineInput!): KpiOfflineResponse!
+}

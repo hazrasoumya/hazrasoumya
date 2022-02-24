@@ -1,0 +1,62 @@
+FROM golang:alpine as build-env
+
+RUN echo http://dl-cdn.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories
+RUN echo http://dl-cdn.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories
+RUN apk update
+
+RUN apk --no-cache add gcc g++ make git
+# RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+
+# RUN apk update \
+#     && apk add -u git
+
+##RUN apk add --update git
+
+## Update CA Certificates
+RUN apk add --no-cache git ca-certificates && update-ca-certificates
+
+# Download all timezone data
+RUN apk add --no-cache tzdata
+RUN apk add tzdata
+
+# Add Maintainer Info
+LABEL maintainer="Zuellig Pharma"
+
+# Set the Current Working Directory inside the container
+RUN mkdir /app
+RUN mkdir /app/login
+RUN mkdir /app/code
+RUN mkdir /app/kpi
+WORKDIR /app/kpi
+
+# Copy go mod and sum files
+COPY kpi/go.mod kpi/go.sum ./
+
+# COPY local login module
+COPY ./login ../login/
+
+# COPY local code module
+COPY ./code ../code/
+
+# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
+RUN go mod download
+
+# Copy the source from the current directory to the Working Directory inside the container
+COPY ./kpi .
+
+
+
+# Build the Go app
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o /go/bin/kpi
+
+# Run the bin
+FROM scratch
+
+COPY --from=build-env /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=build-env /go/bin/kpi /go/bin/kpi
+
+## Copy all timezone data inside the container
+COPY --from=build-env /usr/share/zoneinfo/ /usr/share/zoneinfo/
+
+
+ENTRYPOINT ["/go/bin/kpi"]

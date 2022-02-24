@@ -1,0 +1,193 @@
+input fetchCustomerFeedbackInput {
+    teamMemberCustomerId: String!
+    taskBulletinId: String!
+}
+
+type fetchCustomerFeedbackResponse {
+    error: Boolean!
+    message: String!
+    customerFeedback:[customerFeedback!]!
+}
+
+type customerFeedback {
+    statusTitle: String!
+    statusValue: String!
+    remarks: String!
+    dateCreated: String!
+    attachments:[Attachment!]!
+}
+
+input CustomerTaskFeedBackInput {
+    taskBulletinId: String!
+    teamMemberCustomerId: String!
+    status: String!
+    remarks: String
+    attachments: [attachments]
+}
+
+input attachments{
+  id: String
+  url: String!
+  filename: String!
+}
+
+type CustomerTaskFeedBackResponse {
+    error: Boolean!
+    message: String
+    validationErrors: [validationMessage]
+}
+
+type TaskBulletinUpsertResponse{
+    error: Boolean!
+    message: String!
+    validationErrors: [validationMessage]
+}
+
+input TaskBulletinUpsertInput{
+    id: String           
+	creationDate: String!
+	targetDate: String! 
+	teamMemberCustomer: [String]!
+    type: String!
+    title: String! 
+	description: String!
+    principalName: String!
+    isDeleted: Boolean
+    attachments:[attachments]
+}
+
+input listTaskBulletinInput {
+  id: String
+  type: String
+  isActive: Boolean
+  creationDate: String
+  targetDate: String
+  teamMemberId: String
+  teamMemberCustomerId: String
+  pageNo: Int
+  limit:  Int
+  searchItem: String
+}
+
+input TaskBulletinTitleInput {
+    teamID: String
+}
+
+type TaskBulletinTitleResponse {
+  error: Boolean!
+  message: String
+  typeDetails: [titleValue!]!
+}
+
+type titleValue {
+    type: String!
+}
+
+type listTaskBulletinResponse {
+  error: Boolean!
+  message: String!
+  totalPages: Int!
+  taskBulletins: [taskBulletinData!]!
+}
+
+type taskBulletinData{
+  id: String!
+  creationDate: String!
+  targetDate: String!
+  typeTitle: String!
+  typeValue: String!
+  principalName: String!
+  teamId: String
+  teamName: String!
+  title: String!
+  description: String!
+  salesRep: [SalesRepData!]!
+  attachments: [Attachment!]!
+}
+
+type SalesRepData{
+    teamMemberId: String
+    userId: String
+    firstName: String
+    lastName: String
+    activeDirectory: String
+    email: String
+    approvalRoleTitle: String
+    approvalRoleValues: String
+    customers:[CustomerData]
+}
+
+type CustomerData{
+    customerID: String
+    teamMemberCustomerId: String
+    customerName: String
+    soldTo: Int
+    shipTo: Int
+}
+
+input TaskBulletinInput{
+    teamID: [String]
+    teamMemberId: String
+    teamMemberCustomerId: String
+    customerID: String
+    onlySalesrep: Boolean
+}
+
+type TaskBulletinResponse{
+    error: Boolean!
+    message: String!
+    dropDown: [TeamMemberDropdown]!
+}
+
+type TeamMemberDropdown{
+    teamId: String
+    teamName: String
+    employee: [SalesRepDataDropDown]
+}
+
+type SalesRepDataDropDown{
+    teamMemberId: String
+    userId: String
+    firstName: String
+    lastName: String
+    activeDirectory: String
+    email: String
+    approvalRoleTitle: String
+    approvalRoleValues: String
+    customers:[CustomerDataDropDown]
+}
+
+type CustomerDataDropDown{
+    customerID: String
+    teamMemberCustomerId: String
+    customerName: String
+    soldTo: Int
+    shipTo: Int
+}
+
+input PrincipalDropDownInput{
+    teamID: String! 
+}
+
+type PrincipalDropDownResponse{
+    error: Boolean!
+    message: String
+    data: [principalDropDownData]!  
+}
+
+type principalDropDownData{
+    principalName: String!
+}
+
+extend type Mutation {
+    upsertTaskBulletin(input: TaskBulletinUpsertInput!): TaskBulletinUpsertResponse!
+    insertCustomerTaskFeedBack(input: CustomerTaskFeedBackInput!): CustomerTaskFeedBackResponse!
+}
+
+extend type Query {
+    listTaskBulletin(input: listTaskBulletinInput): listTaskBulletinResponse!
+	fetchCustomerFeedback(input: fetchCustomerFeedbackInput!): fetchCustomerFeedbackResponse!
+    teamToCustomerDropDown(input: TaskBulletinInput):TaskBulletinResponse!
+    principalDropDown(input: PrincipalDropDownInput!): PrincipalDropDownResponse!
+    taskBulletinTitleDropDown(input: TaskBulletinTitleInput): TaskBulletinTitleResponse!
+}

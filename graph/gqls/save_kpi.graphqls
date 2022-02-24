@@ -1,0 +1,47 @@
+input UpsertKpiRequest {
+  id: String
+  name: String!
+  targetTeam: String!
+  targetProducts: [String!]!
+  targetBrand: [String!]!
+  effectiveMonth: Int!
+  effectiveYear: Int!
+  isPriority: Boolean!
+  brandDesign: [KPI!]!
+  productDesign: [KPI!]!
+  isDeleted: Boolean
+}
+
+input KPI {
+  name: String
+  type: String!
+  active: Boolean
+  category: Int!
+  effectiveStartDate: String
+  effectiveEndDate: String
+  questions: [KPIQuestion!]!
+}
+
+input KPIDesign {
+  name: String
+  active: Boolean
+  category: Int!
+  type: String
+  effectiveStartDate:String
+  effectiveEndDate:String
+  questions: [KPIQuestion!]!
+}
+
+
+input KPIQuestion {
+  questionNumber:Int!
+  title: String!
+  type: String!
+  optionValues: [String!]!
+  active: Boolean
+  required: Boolean
+}
+
+extend type Mutation {
+  saveKpi(input: UpsertKpiRequest!): kpiResponse!
+}

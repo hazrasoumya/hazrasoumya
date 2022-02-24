@@ -1,0 +1,74 @@
+input CustomerTargetInput{
+    id: String 
+    type: String !
+    category: String !
+    productBrandId: String !
+    year: Int !
+    answers: [TargetValues!]!
+    isDeleted: Boolean
+}
+
+input GetTargetCustomerRequest {
+    isExcel: Boolean!
+    id: String
+    type: String
+    category: String
+    productBrandId: String
+    productBrandName: String
+    year: Int
+    pageNo: Int
+    limit: Int
+}
+type GetTargetCustomerResponse {
+    url: String!
+    error: Boolean!
+    message: String
+    totalPage: Int!
+    data: [TargetCustomer]!
+}
+
+type TargetCustomer {
+    customerTargetId: String
+    type: String
+    category: String
+    productBrandId: String
+    productBrandName: String
+    year: Int
+    targets: [Target]
+}
+
+type Target {
+    month: Int
+    value: Float
+}
+
+type CustomerGroupResponse {
+    error: Boolean!
+    message: String!
+    custoMerData:[CustomerGroup!]!
+}
+type CustomerGroup {
+   inDusTrialCode: String!
+   customeDetails: [customerResponse!]!
+}
+
+type customerResponse {
+    custoMerId: String!
+    custoMerName: String!
+    soldTo: String!
+    shipTo: String!
+}
+
+input CustomerGroupInput {
+    teamId: String
+    customerGroup: [String]
+}
+
+extend type Mutation {
+    saveCustomerTarget (input: CustomerTargetInput!):kpiResponse!
+}
+
+extend type Query {
+    getTargetCustomer(input: GetTargetCustomerRequest!): GetTargetCustomerResponse!
+    getCustomerGroup(input: CustomerGroupInput): CustomerGroupResponse!
+}

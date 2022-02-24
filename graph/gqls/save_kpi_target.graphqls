@@ -1,0 +1,29 @@
+input KPITargetInput{
+    id:String
+    salesRepId:String
+    teamId:String
+    year:Int!
+    target:[KPITargets!]!
+    authorActiveDirName: String!
+}
+
+input KPITargets{
+    kpiTitle:String!
+    values:[TargetValues!]!
+}
+
+input TargetValues{
+    month:Int!
+    value:Float!
+}
+
+input ActionKPITargetInput{
+    id:String!
+    action:Boolean!
+    authorActiveDirName: String!
+}
+
+extend type Mutation {
+  upsertKpiTarget(input: KPITargetInput!): kpiResponse!
+  actionKpiTarget(input: ActionKPITargetInput!): kpiResponse!
+}

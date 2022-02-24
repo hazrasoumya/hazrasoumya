@@ -1,0 +1,26 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type validationMessage {
+  row: Int!
+  errorCode: Int!
+  message: String!
+}
+
+type validationResult {
+  error: Boolean!
+  validationTimeTaken: String!
+  validationMessage: [validationMessage]
+}
+
+type kpiResponse {
+  error: Boolean!
+  message: String!
+  errorCode: Int!
+  validationErrors: [validationMessage]
+}
+
+type Query {
+  todos: [String!]!
+}

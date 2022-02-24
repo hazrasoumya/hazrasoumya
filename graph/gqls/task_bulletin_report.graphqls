@@ -1,0 +1,37 @@
+type taskReport {
+    bulletinTitle:  String
+    bulletinType:   String
+    principalName:  String
+    customerName:   String
+    teamName:       String
+    userName:       String
+    activeDirectory:String
+    creationDate:   String
+    targetDate:     String
+    weeklyFeedback: [WeeklyFeedback]
+}
+
+type WeeklyFeedback {
+    weekNumber:     Int
+    weekDateValue:  String
+    status:         String
+    remarks:        String
+    attachments:    [Attachment]
+}
+
+type TaskReportOutput {
+    error:   Boolean!
+    message: String!
+    url:     String!
+    values:  [taskReport]
+}
+
+input TaskBulletinReportInput {
+    isExcel: Boolean!
+    tittle: [String!]!
+    dateRange: [String!]!
+}
+
+extend type Query {
+    TaskBuletinReport(input:TaskBulletinReportInput!): TaskReportOutput!
+}

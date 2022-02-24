@@ -1,0 +1,18 @@
+input KpiAnswerRequest {
+  kpiVersionId: String!
+  category: Int!
+  answers: [KPIAnswerStruct!]!
+  authorActiveDirName: String!
+  teamMemberCustomerId: String!
+  targetItem: String!
+  scheduleEvent: String!
+}
+
+input KPIAnswerStruct {
+  questioNnumber: Int!
+  value: [String!]!
+}   
+
+extend type Mutation {
+  saveKpiAnswers(input: KpiAnswerRequest!): kpiResponse!
+}
